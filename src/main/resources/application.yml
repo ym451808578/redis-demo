@@ -1,13 +1,19 @@
 spring:
   redis:
-    host: 192.168.30.130
-    port: 6379
+#    host: 192.168.175.128
+#    port: 6379
     database: 0
-    connect-timeout: 1800000
+    timeout: 30000
+#    sentinel:
+#      master: mymaster
+#      nodes: 192.168.175.128:26379,192.168.175.129:26379,192.168.175.130:26379
+    cluster:
+      max-redirects: 3
+      nodes: 192.168.175.128:6379,192.168.175.128:6380,192.168.175.128:6381,192.168.175.128:6389,192.168.175.128:6390,192.168.175.128:6391
     lettuce:
       pool:
         max-active: 8
-        max-wait: 10000
+        max-wait: -1
         max-idle: 8
         min-idle: 0
 server:
