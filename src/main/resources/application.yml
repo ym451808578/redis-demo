@@ -1,20 +1,39 @@
 spring:
   redis:
-#    host: 192.168.175.128
-#    port: 6379
+    host: 192.168.30.130
+    port: 6379
     database: 0
     timeout: 30000
-#    sentinel:
-#      master: mymaster
-#      nodes: 192.168.175.128:26379,192.168.175.129:26379,192.168.175.130:26379
-    cluster:
-      max-redirects: 3
-      nodes: 192.168.175.128:6379,192.168.175.128:6380,192.168.175.128:6381,192.168.175.128:6389,192.168.175.128:6390,192.168.175.128:6391
+    #    sentinel:
+    #      master: mymaster
+    #      nodes: 192.168.175.128:26379,192.168.175.129:26379,192.168.175.130:26379
+#    cluster:
+#      max-redirects: 3
+#      nodes: 192.168.175.128:6379,192.168.175.128:6380,192.168.175.128:6381,192.168.175.128:6389,192.168.175.128:6390,192.168.175.128:6391
     lettuce:
       pool:
         max-active: 8
         max-wait: -1
         max-idle: 8
         min-idle: 0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user-db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true  #缓存null，防止缓存穿透
+      use-key-prefix: true  #是否使用缓存前缀
+      key-prefix: boot-launch  #缓存前缀，按应用分类
+      time-to-live: 3600  #缓存到期时间，默认不主动删除永远不到期，不支持分类配置，容易造成缓存雪崩
 server:
   port: 8080
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #sql打印，从缓存取数时，无sql语句
+caching:
+  ttlMap:
+    user: 60
